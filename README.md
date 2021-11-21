@@ -86,6 +86,7 @@ see ./input/log1.log as an example
 
 ## Design
 Just load the log file in a dictionary in the ram in a compressed manner and access it directly in O(1), which also would easily allows us to cache everything, (as opposed to reading the only the required fields and only storing the compiled statistics in ram which would force us to search the disk)
+![design](./images/design.png)
 
 ## Limitations
 Even though the code should be “production-grade”, the end result would never compete with a proper product like the listed above. This is the case because the requirements are pretty simple.
