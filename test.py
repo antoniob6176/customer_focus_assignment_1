@@ -1,22 +1,10 @@
 """
 tests LogManager and CliManager using DI and without relying on any environment
 """
+import unittest
 
 from LogManager import LogManager
 from CliManager import CliManager
-
-
-def test1():
-    logManager = LogManager()
-    logManager.addLog({"action": "a", "result": "success"})
-    logManager.addLog({"action": "a", "result": "success"})
-    logManager.addLog({"action": "b", "result": "success"})
-    logManager.addLog({"action": "b", "result": "success"})
-    logManager.addLog({"action": "b", "result": "fail"})
-
-    assert logManager.total == 5, "error in total log count"
-    assert logManager.getLogCounts("action")["a"] == 2, "error in log counts"
-    assert logManager.getLogPercentage("result", "success") == 0.8, "error in log percentages"
 
 
 class MockFileManager():
@@ -25,6 +13,7 @@ class MockFileManager():
 
     def addFile(self, _):
         return True
+
 
 class MockInputManager():
     def __init__(self):
@@ -52,37 +41,48 @@ class MockOutputManager():
     def clearOptions(self, lineCount):
         pass
 
-def test2():
-    logManager = LogManager()
-    logManager.addLog({"action": "a", "result": "success"})
-    logManager.addLog({"action": "a", "result": "success"})
-    logManager.addLog({"action": "b", "result": "success"})
-    logManager.addLog({"action": "b", "result": "success"})
-    logManager.addLog({"action": "b", "result": "fail"})
 
-    fileManager = MockFileManager()
+class TestSum(unittest.TestCase):
 
-    inputManager = MockInputManager()
-    outputManager = MockOutputManager()
-    cliManager = CliManager(logManager, fileManager, inputManager, outputManager)
-    counts = cliManager.getCounts()
-    percents = cliManager.getPercentage()
+    def testLogManager(self):
+        logManager = LogManager()
+        logManager.addLog({"action": "a", "result": "success"})
+        logManager.addLog({"action": "a", "result": "success"})
+        logManager.addLog({"action": "b", "result": "success"})
+        logManager.addLog({"action": "b", "result": "success"})
+        logManager.addLog({"action": "b", "result": "fail"})
 
-    # inputManager would change the input
-    cliManager2 = CliManager(logManager, fileManager, inputManager, outputManager)
-    counts2 = cliManager2.getCounts()
-    percents2 = cliManager.getPercentage()
+        self.assertEqual(logManager.total ,5, "error in total log count")
+        self.assertEqual(logManager.getLogCounts("action")["a"] , 2, "error in log counts")
+        self.assertEqual(logManager.getLogPercentage("result", "success") , 0.8, "error in log percentages")
 
-    # values need to be different since input is different
-    assert counts != counts2, "cli manager didn't switch selection"
-    assert percents != percents2, "cli manager didn't switch selection"
+    def testCliManager(self):
+        logManager = LogManager()
+        logManager.addLog({"action": "a", "result": "success"})
+        logManager.addLog({"action": "a", "result": "success"})
+        logManager.addLog({"action": "b", "result": "success"})
+        logManager.addLog({"action": "b", "result": "success"})
+        logManager.addLog({"action": "b", "result": "fail"})
 
-def doTests():
-    test1()
-    test2()
-    print("tests succeded\n")
+        fileManager = MockFileManager()
+        inputManager = MockInputManager()
+        outputManager = MockOutputManager()
 
-if __name__ == "__main__":
-    doTests()
+        cliManager = CliManager(logManager, fileManager, inputManager, outputManager)
+        counts = cliManager.getCounts()
+        percents = cliManager.getPercentage()
+
+        # inputManager would change the input
+        cliManager2 = CliManager(logManager, fileManager, inputManager, outputManager)
+        counts2 = cliManager2.getCounts()
+        percents2 = cliManager.getPercentage()
+
+        # values need to be different since input is different
+        self.assertNotEqual(counts , counts2, "cli manager didn't switch selection")
+        self.assertNotEqual(percents , percents2, "cli manager didn't switch selection")
+
+
+if __name__ == '__main__':
+    unittest.main()
 
 

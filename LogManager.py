@@ -1,3 +1,8 @@
+"""
+the core of the program stores the data from the logs in a compressed manner 
+"""
+
+
 class LogManager():
     def __init__(self) -> None:
         self.compiledData = {}  # using a dictionary: more simple and json compatible

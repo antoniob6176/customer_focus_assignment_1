@@ -1,3 +1,7 @@
+"""
+handles parsing the files and sending the data to the log manager
+"""
+
 import json
 from json.decoder import JSONDecodeError
 import glob

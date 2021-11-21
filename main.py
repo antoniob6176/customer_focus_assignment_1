@@ -1,5 +1,5 @@
 """
-program to analise log files, see readme.
+program to analise log files, please see readme.
 """
 
 import json
@@ -9,12 +9,9 @@ from InputManager import InputManager
 from OutputManager import OutputManager
 from LogManager import LogManager
 from CliManager import CliManager
-import test
+
 
 if __name__ == "__main__":
-    """do the tests then allow to run if succeded"""
-    test.doTests()
-
     args = sys.argv[1:]
     inputManager = InputManager()
     outputManager = OutputManager()
