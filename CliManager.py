@@ -49,11 +49,11 @@ class CliManager():
                     self.inputManager.input("press enter to continue")
                 shouldContinue = result != False
             except ValueError as ex:
-                self.outputManager.print(f"{type(ex).__name__}: {ex} not found")
+                self.outputManager.printError(f"{type(ex).__name__}: {ex} not found")
             except KeyError as ex:
-                self.outputManager.print(f"{type(ex).__name__}: {ex} not found")
+                self.outputManager.printError(f"{type(ex).__name__}: {ex} not found")
             except IndexError as ex:
-                self.outputManager.print(f"{type(ex).__name__}: {ex}")
+                self.outputManager.printError(f"{type(ex).__name__}: {ex}")
 
     def getSelection(self, actions, text="please select: \t"):
         if not actions:

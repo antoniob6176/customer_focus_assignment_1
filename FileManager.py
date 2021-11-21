@@ -20,12 +20,12 @@ class FileManager():
         try:
             files = glob.glob(filesPath, recursive=True)
             if not files:
-                self.outputManager.print(f"couldn't find files for: {filesPath}")
+                self.outputManager.priprintErrornt(f"couldn't find files for: {filesPath}")
             for file in files:
                 if self.addFile(file) == True:
                     self.outputManager.print(f"file added successfully {file}")
         except FileNotFoundError:
-            self.outputManager.print(f"file {filesPath} was not found")
+            self.outputManager.printError(f"file {filesPath} was not found")
 
     def addFile(self, filePath):
         """adds the log file to the log manager, stops on first error"""
@@ -37,11 +37,11 @@ class FileManager():
                     self.logManager.addLog(log)
                 return True
         except PermissionError as ex:
-            self.outputManager.print(f"permissons error for: {filePath}")
+            self.outputManager.printError(f"permissons error for: {filePath}")
         except JSONDecodeError as ex:
-            self.outputManager.print(f"log file not in correct format: {filePath} {ex}")
+            self.outputManager.printError(f"log file not in correct format: {filePath} {ex}")
         except UnicodeDecodeError as ex:
-            self.outputManager.print(f"log file not in correct format: {filePath} {ex}")
+            self.outputManager.printError(f"log file not in correct format: {filePath} {ex}")
         except IsADirectoryError:
-            self.outputManager.print(f"this is a directory: {filePath}")
+            self.outputManager.printError(f"this is a directory: {filePath}")
 
