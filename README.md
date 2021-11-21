@@ -74,6 +74,10 @@ With that out of the way we can start the assignment
 
 Those are pretty easy and can be found using a single index per property which can be done directly while using little ram (in other words instead of looking at the rows we would look at the columns).
 
+## Images
+![adding files](./images/example_add_file.png)
+![getting_percentages](./images/example_get_percentage.png)
+
 ## Assumptions
 Logs are in the requested json format in one line per log ex:
 {“level”: “debug”, ...}
