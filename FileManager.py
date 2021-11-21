@@ -16,6 +16,7 @@ class FileManager():
         self.outputManager = outputManager
 
     def addFiles(self, filesPath):
+        """adds files and can take a wildward pattern ex ./input/log*.log"""
         try:
             files = glob.glob(filesPath, recursive=True)
             if not files:
@@ -41,3 +42,6 @@ class FileManager():
             self.outputManager.print(f"log file not in correct format: {filePath} {ex}")
         except UnicodeDecodeError as ex:
             self.outputManager.print(f"log file not in correct format: {filePath} {ex}")
+        except IsADirectoryError:
+            self.outputManager.print(f"this is a directory: {filePath}")
+

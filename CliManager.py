@@ -44,9 +44,9 @@ class CliManager():
                 self.outputManager.print("")
 
                 result = self.actions[selected]["function"]()
-                if result != False and result != None:
+                if result:
                     self.outputManager.print(result)
-                    _ = self.inputManager.input("press enter to continue")
+                    self.inputManager.input("press enter to continue")
                 shouldContinue = result != False
             except ValueError as ex:
                 self.outputManager.print(f"{type(ex).__name__}: {ex} not found")
