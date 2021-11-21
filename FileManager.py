@@ -15,7 +15,7 @@ class FileManager():
         self.logManager = logManager
         self.outputManager = outputManager
 
-    def addFiles(self, filesPath):
+    def addFiles(self, filesPath: str):
         """adds files and can take a wildward pattern ex ./input/log*.log"""
         try:
             files = glob.glob(filesPath, recursive=True)
@@ -27,7 +27,7 @@ class FileManager():
         except FileNotFoundError:
             self.outputManager.printError(f"file {filesPath} was not found")
 
-    def addFile(self, filePath):
+    def addFile(self, filePath: str):
         """adds the log file to the log manager, stops on first error"""
         try:
             with open(filePath) as fp:

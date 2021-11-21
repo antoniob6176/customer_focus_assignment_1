@@ -34,5 +34,5 @@ class InputManager():
             elif c1 == "\r":
                 return "\r"
 
-    def input(self, message):
+    def input(self, message: str):
         return input(message)

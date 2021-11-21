@@ -21,20 +21,20 @@ class OutputManager():
     def __init__(self) -> None:
         pass  # we can add different outputs here, ex: print to file or to http server
 
-    def print(self, text, end="\n"):
+    def print(self, text: str, end="\n"):
         print(text, end)
 
-    def printError(self, text, end="\n"):
+    def printError(self, text: str, end="\n"):
         print(f"{bcolors.WARNING}{text}{bcolors.ENDC}", end)
 
-    def printOptions(self, text, options, selectedOption):
+    def printOptions(self, text: str, options: list, selectedOption: int):
         print(text)
         # paddin is needed to clean up the old characters
         padding = "                       "
         print("\n".join([f"{option}{padding}" if index !=
                          selectedOption else f"[{option}]{padding}" for index, option in enumerate(options)]))
 
-    def clearOptions(self, lineCount):
+    def clearOptions(self, lineCount: int):
         for _ in range(lineCount):
             # this makes the cursor go back up a few lines
             sys.stdout.write("\033[F")

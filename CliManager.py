@@ -55,7 +55,7 @@ class CliManager():
             except IndexError as ex:
                 self.outputManager.printError(f"{type(ex).__name__}: {ex}")
 
-    def getSelection(self, actions, text="please select: \t"):
+    def getSelection(self, actions: dict, text="please select: \t"):
         if not actions:
             raise IndexError("no values are found, please add some")
 
