@@ -105,7 +105,7 @@ Even though the code should be “production-grade”, the end result would neve
 4. type the text that you want when prompted
 
 ## Things To Improve
-1. checking memory useage during runtime
+1. checking memory usage during runtime
 2. caching the compiled data on the desk to save on ram and to restore data next time program runs
 3. add a low ram mode where it loops over the files and only read and keep minimal amount of data
 4. adding an output manager where it can direct output ex: to both a file and console
