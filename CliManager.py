@@ -10,11 +10,11 @@ class CliManager():
         self.fileManager = fileManager
         self.inputManager = inputManager
         self.actions = {
+            "help": {"function": self.getHelp, "description": "shows functions and descriptions"},
             "get stats": {"function": self.getStats, "description": "get the total statistics about a file"},
             "get percentage": {"function": self.getPercentage, "description": "give the percentage a values appeared in a field"},
             "get counts": {"function": self.getCounts, "description": "give the count of unique values that appeared in a field"},
             "add files": {"function": self.addFiles, "description": "adds files and can take a wildcard ex ./**/*.log"},
-            "help": {"function": self.getHelp, "description": "shows functions and descriptions"},
             "quit": {"function": self.quit, "description": "exits the program"},
         }
 
@@ -26,7 +26,7 @@ class CliManager():
         shouldContinue = True
         while shouldContinue:
             try:
-                selected = self.getSelection(self.actions)
+                selected = self.getSelection(self.actions, "please select action: ")
                 result = self.actions[selected]["function"]()
                 print(result)
                 shouldContinue = result != False
@@ -34,6 +34,8 @@ class CliManager():
                 print(f"{type(ex).__name__}: {ex} not found")
             except KeyError as ex:
                 print(f"{type(ex).__name__}: {ex} not found")
+            except IndexError as ex:
+                print(f"{type(ex).__name__}: no values are found")
 
     def getSelection(self, actions, text="please select: \t"):
         selectedAction = 0
@@ -55,7 +57,7 @@ class CliManager():
         return list(actions)[selectedAction]
 
     def getPercentage(self):
-        field = self.getSelection(self.logManager.compiledData)
+        field = self.getSelection(self.logManager.compiledData, "please select field: ")
         value = self.inputManager.input("please type the value that you want: ")
 
         percentage = self.logManager.getLogPercentage(field, value)
@@ -63,7 +65,7 @@ class CliManager():
         return f"percentage of {value} is { percentage * 100}%"
 
     def getCounts(self):
-        field = self.getSelection(self.logManager.compiledData)
+        field = self.getSelection(self.logManager.compiledData, "please select field: ")
         logCounts = self.logManager.getLogCounts(field)
         return f"logs per {field} is {json.dumps(logCounts)}"
 
@@ -72,7 +74,7 @@ class CliManager():
 
     def getHelp(self):
         listToPrint = [f"{key}: {value['description']}" for key, value in self.actions.items()]
-        return "\n".join(listToPrint)
+        return "\n".join(listToPrint) + "\n\nuse left and right arrows to navigate"
 
     def quit(self):
         return False

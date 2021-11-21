@@ -23,9 +23,12 @@ if __name__ == "__main__":
         fileManager.addFiles(arg)
 
     # requested stuff from the assignment
-    print(f"total number is {logManager.total}")
-    print(f"logs per action is {json.dumps(logManager.getLogCounts('action'))}")
-    print(f"percentage of success is {logManager.getLogPercentage('result', 'success')}")
+    if logManager.total == 0:
+        print("no file loaded, skipping assignment answers")
+    else: 
+        print(f"total number is {logManager.total}")
+        print(f"logs per action is {json.dumps(logManager.getLogCounts('action'))}")
+        print(f"percentage of success is {logManager.getLogPercentage('result', 'success')}")
 
     cliManager = CliManager(logManager, fileManager, inputManager)
     cliManager.start()
