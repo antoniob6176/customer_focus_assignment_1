@@ -3,12 +3,18 @@ from FileManager import FileManager
 from InputManager import InputManager
 
 from LogManager import LogManager
+from OutputManager import OutputManager
 
 class CliManager():
-    def __init__(self, logManager: LogManager, fileManager: FileManager, inputManager: InputManager) -> None:
+    def __init__(self,
+                logManager: LogManager,
+                fileManager: FileManager,
+                inputManager: InputManager,
+                outputManager:OutputManager) -> None:
         self.logManager = logManager
         self.fileManager = fileManager
         self.inputManager = inputManager
+        self.outputManager = outputManager
         self.actions = {
             "help": {"function": self.getHelp, "description": "shows functions and descriptions"},
             "get stats": {"function": self.getStats, "description": "get the total statistics about a file"},
@@ -19,7 +25,7 @@ class CliManager():
         }
 
     def addFiles(self):
-        value = input("please type the path: ")
+        value = self.inputManager.input("please type the path: ")
         self.fileManager.addFiles(value)
 
     def start(self):
@@ -27,21 +33,29 @@ class CliManager():
         while shouldContinue:
             try:
                 selected = self.getSelection(self.actions, "please select action: ")
+
+                self.outputManager.print("")
+
                 result = self.actions[selected]["function"]()
-                print(result)
+                if result != False and result != None:
+                    self.outputManager.print(result)
+                    _ = self.inputManager.input("press enter to continue")
                 shouldContinue = result != False
             except ValueError as ex:
-                print(f"{type(ex).__name__}: {ex} not found")
+                self.outputManager.print(f"{type(ex).__name__}: {ex} not found")
             except KeyError as ex:
-                print(f"{type(ex).__name__}: {ex} not found")
+                self.outputManager.print(f"{type(ex).__name__}: {ex} not found")
             except IndexError as ex:
-                print(f"{type(ex).__name__}: no values are found")
+                self.outputManager.print(f"{type(ex).__name__}: {ex}")
 
     def getSelection(self, actions, text="please select: \t"):
+        if not actions:
+            raise IndexError("no values are found, please add some")
+
         selectedAction = 0
         while True:
-            print("\r" + text + ', '.join(
-                [action if index != selectedAction else f"[{action}]" for index, action in enumerate(actions)]), end="")
+            self.outputManager.printOptions(text, actions, selectedAction)
+
             inputKey = self.inputManager.getKey()
             if inputKey == "right":
                 selectedAction += 1
@@ -52,8 +66,8 @@ class CliManager():
 
             selectedAction = min(selectedAction, len(actions) - 1)
             selectedAction = max(selectedAction, 0)
+            self.outputManager.clearOptions(len(actions) + 2)
 
-        print("\r")
         return list(actions)[selectedAction]
 
     def getPercentage(self):
@@ -62,12 +76,12 @@ class CliManager():
 
         percentage = self.logManager.getLogPercentage(field, value)
 
-        return f"percentage of {value} is { percentage * 100}%"
+        return f"percentage of {value} is { int(percentage * 100)}%"
 
     def getCounts(self):
         field = self.getSelection(self.logManager.compiledData, "please select field: ")
         logCounts = self.logManager.getLogCounts(field)
-        return f"logs per {field} is {json.dumps(logCounts)}"
+        return f"logs per {field} is {json.dumps(logCounts, indent=2)}"
 
     def getStats(self):
         return json.dumps(self.logManager.compiledData, indent= 2)

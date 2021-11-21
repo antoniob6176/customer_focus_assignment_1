@@ -100,11 +100,10 @@ Even though the code should be “production-grade”, the end result would neve
 4. type the text that you want when prompted
 
 ## Things To Improve
-1. checking memory useage for the compiled log
+1. checking memory useage during runtime
 2. caching the compiled data on the desk to save on ram and to restore data next time program runs
 3. add a low ram mode where it loops over the files and only read and keep minimal amount of data
 4. adding an output manager where it can direct output ex: to both a file and console
 5. add the ability to ignore properties since for example a timestamp column would be hard to compress and takes a lot of ram
 6. add the ability to remember which files gave each log
-7. need to remove some of the extra console prints
-8. limit line output to terminal width because of artifacts when it's longer
+7. better compatability with different console sizes

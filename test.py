@@ -20,10 +20,10 @@ def test1():
 
 
 class MockFileManager():
-    def addFiles(self, filesPath):
+    def addFiles(self, _):
         return True
 
-    def addFile(self, filePath):
+    def addFile(self, _):
         return True
 
 class MockInputManager():
@@ -41,6 +41,17 @@ class MockInputManager():
         self.inputMessage = "b"
         return oldValue
 
+
+class MockOutputManager():
+    def __init__(self) -> None:
+        pass # we can add different outputs here, ex: print to file or to http server
+    def print(self, text, ending = "\n"):
+        pass
+    def printOptions(self, text, options, selectedAction):
+        pass
+    def clearOptions(self, lineCount):
+        pass
+
 def test2():
     logManager = LogManager()
     logManager.addLog({"action": "a", "result": "success"})
@@ -52,12 +63,13 @@ def test2():
     fileManager = MockFileManager()
 
     inputManager = MockInputManager()
-    cliManager = CliManager(logManager, fileManager, inputManager)
+    outputManager = MockOutputManager()
+    cliManager = CliManager(logManager, fileManager, inputManager, outputManager)
     counts = cliManager.getCounts()
     percents = cliManager.getPercentage()
 
     # inputManager would change the input
-    cliManager2 = CliManager(logManager, fileManager, inputManager)
+    cliManager2 = CliManager(logManager, fileManager, inputManager, outputManager)
     counts2 = cliManager2.getCounts()
     percents2 = cliManager.getPercentage()
 
@@ -68,7 +80,7 @@ def test2():
 def doTests():
     test1()
     test2()
-    print("tests succeded")
+    print("tests succeded\n")
 
 if __name__ == "__main__":
     doTests()

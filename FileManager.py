@@ -3,22 +3,26 @@ from json.decoder import JSONDecodeError
 import glob
 
 from LogManager import LogManager
+from OutputManager import OutputManager
 
 
 class FileManager():
-    def __init__(self, logManager: LogManager) -> None:
+    def __init__(self, logManager: LogManager, outputManager: OutputManager) -> None:
         self.logManager = logManager
+        self.outputManager = outputManager
 
     def addFiles(self, filesPath):
         try:
             files = glob.glob(filesPath, recursive=True)
+            if not files:
+                self.outputManager.print(f"couldn't find files for: {filesPath}")
             for file in files:
                 if self.addFile(file) == True:
-                    print(f"file added successfully {file}")
+                    self.outputManager.print(f"file added successfully {file}")
         except FileNotFoundError:
-            print(f"file {filesPath} was not found")
+            self.outputManager.print(f"file {filesPath} was not found")
 
-    def addFile(self, filePath):  # python doesn't have overloading
+    def addFile(self, filePath):
         try:
             with open(filePath) as fp:
                 for line in fp:
@@ -26,8 +30,8 @@ class FileManager():
                     self.logManager.addLog(log)
                 return True
         except PermissionError as ex:
-            print(f"permissons error for: {filePath}")
+            self.outputManager.print(f"permissons error for: {filePath}")
         except JSONDecodeError as ex:
-            print(f"log file not in format: {filePath} {ex}")
+            self.outputManager.print(f"log file not in format: {filePath} {ex}")
         except UnicodeDecodeError as ex:
-            print(f"log file not in format: {filePath} {ex}")
+            self.outputManager.print(f"log file not in format: {filePath} {ex}")
