@@ -22,12 +22,11 @@ An on-call developer would have knowledge about the structure and can look for c
 ## Part 3
 As I didn't have experience with atop I was hoping that the log file would’ve been enough, but nope, had to use it in the end.
 
-It took me about 5 minutes to find the indicators that i need to be able to investigate, i would use the search feature and it would high-light where the text appears on the right edge:
- 
+Using VSCode it took me about 5 minutes to find the indicators that i need to be able to investigate, i would use the search feature and it would high-light where the text appears on the right edge:
 
-The first indicator is the string “Internet connectivity test succeeded” which shows two blank periods starting  with one starting around the time the notification was received, looking around from there it leads mainly to
-“Proxifier process has become too busy.” which shows from 14:45:38 to 15:18:58
-“Network is unreachable” which shows from 16:12:33 to 17:00:00 (since it wasn’t mentioned in the assignment it might not have been a problem; could be that someone rolled to a different server and disabled this one)
+The first indicator is the string “Internet connectivity test succeeded” which shows two blank periods starting with one starting around the time the notification was received, looking around from there it leads mainly to
+* “Proxifier process has become too busy.” which shows from 14:45:38 to 15:18:58
+* “Network is unreachable” which shows from 16:12:33 to 17:00:00 (since it wasn’t mentioned in the assignment it might not have been a problem; could be that someone rolled to a different server and disabled this one)
 
 The backtracking journey starts: 
 * just scrolling up from 14:45:38, we see that the seconds at 14:45:13 logs a lot of stuff compared to the others
@@ -46,8 +45,7 @@ If I knew that atop was this easy I would've tried it from the start and would�
 Since fontforge is a text editor and ending the process made stuff go back to normal, I would assume that it isn’t part of the technology stack and that someone installed it.
 
 ## Part 4
-
-1. Simply Don’t install stuff on server
+1. Simply don’t install stuff on server
 2. A program to stop process that use a lot of ram (ex: >2GB) is helpful to prvent issues like this but may give limitations if not carfully implemented
 3. sending an automatic email if CPU or RAM go above a certain threshold, makes problems more noticable but may cause false positives to happen ex: cpu goes to 90% then back to normal after email is sent
 
@@ -101,7 +99,7 @@ Even though the code should be “production-grade”, the end result would neve
 3. use the arrow keys when prompted
 4. type the text that you want when prompted
 
-## things to improve
+## Things To Improve
 1. checking memory useage for the compiled log
 2. caching the compiled data on the desk to save on ram and to restore data next time program runs
 3. add a low ram mode where it loops over the files and only read and keep minimal amount of data
