@@ -23,15 +23,17 @@ class FileManager():
             self.outputManager.print(f"file {filesPath} was not found")
 
     def addFile(self, filePath):
+        """adds the log file to the log manager, stops on first error"""
         try:
             with open(filePath) as fp:
-                for line in fp:
-                    log = json.loads(line)
+                for line in fp: 
+                    # we can add more log fomats here ex: CSV
+                    log = json.loads(line) # this format is one JSON per line
                     self.logManager.addLog(log)
                 return True
         except PermissionError as ex:
             self.outputManager.print(f"permissons error for: {filePath}")
         except JSONDecodeError as ex:
-            self.outputManager.print(f"log file not in format: {filePath} {ex}")
+            self.outputManager.print(f"log file not in correct format: {filePath} {ex}")
         except UnicodeDecodeError as ex:
-            self.outputManager.print(f"log file not in format: {filePath} {ex}")
+            self.outputManager.print(f"log file not in correct format: {filePath} {ex}")

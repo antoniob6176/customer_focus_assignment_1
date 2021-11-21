@@ -1,3 +1,8 @@
+"""
+this is the main CLI loop that shows users options and get the input
+what's special is the interactive selection that can be used with the arrow keys
+"""
+
 import json
 from FileManager import FileManager
 from InputManager import InputManager
@@ -11,11 +16,13 @@ class CliManager():
                 fileManager: FileManager,
                 inputManager: InputManager,
                 outputManager:OutputManager) -> None:
+
         self.logManager = logManager
         self.fileManager = fileManager
         self.inputManager = inputManager
         self.outputManager = outputManager
-        self.actions = {
+
+        self.actions = { # keeping everything isolated on the instance
             "help": {"function": self.getHelp, "description": "shows functions and descriptions"},
             "get stats": {"function": self.getStats, "description": "get the total statistics about a file"},
             "get percentage": {"function": self.getPercentage, "description": "give the percentage a values appeared in a field"},
@@ -88,7 +95,7 @@ class CliManager():
 
     def getHelp(self):
         listToPrint = [f"{key}: {value['description']}" for key, value in self.actions.items()]
-        return "\n".join(listToPrint) + "\n\nuse left and right arrows to navigate"
+        return "\n".join(listToPrint) + "\n\nuse the arrow keys to navigate"
 
     def quit(self):
         return False
